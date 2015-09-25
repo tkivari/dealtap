@@ -14,11 +14,11 @@
   $goats = $sheep = array();
 
   foreach($goat_primes as $prime) {
-    $goats[] = new \DealTap\Goat($prime);
+    $goats[] = new \DealTap\Animal\Goat($prime);
   }
 
   foreach($sheep_primes as $prime) {
-    $sheep[] = new \DealTap\Sheep($prime);
+    $sheep[] = new \DealTap\Animal\Sheep($prime);
   }
 
   file_put_contents('goat.txt', join(",",$goat_primes));

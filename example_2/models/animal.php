@@ -2,6 +2,8 @@
 
   namespace DealTap;
 
+  use Exception;
+
   require_once("utils.php");
 
   abstract class Animal

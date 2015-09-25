@@ -15,8 +15,16 @@
      */
     public static function generatePrimes($number, $qty = 100) {
       // generate $primes here
+      if ($number < 2) return false;
+      $primes = range(2, $number);
+      for ($i = 2, $max = sqrt($number); $i < $max; $i++)
+      {
+          if ($primes[$i - 2] == null) continue;
+          for ($j = 2, $j_max = count($primes); ($k = $i * $j - 2) < $j_max; $j++) unset($primes[$k]);
+      }
 
-      // Randomly reorder $primes array and grab just the first $qty
+      var_dump($primes);
+      // Randomly reorder $primes array and grab the first $qty
       shuffle($primes);
       return array_slice($primes, 0, $qty);
     }
