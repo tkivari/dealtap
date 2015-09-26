@@ -4,7 +4,7 @@
 
   /*
    * \DealTap\Utils
-   * A class of static utility functions
+   * A class of mathy static utility functions
    */
   class Utils
   {
@@ -13,19 +13,25 @@
      * Generate a list of $qty prime numbers up to $number
      * @return array
      */
-    public static function generatePrimes($number, $qty = 100) {
-      // generate $primes here
-      if ($number < 2) return false;
-      $primes = range(2, $number);
-      for ($i = 2, $max = sqrt($number); $i < $max; $i++)
-      {
-          if ($primes[$i - 2] == null) continue;
-          for ($j = 2, $j_max = count($primes); ($k = $i * $j - 2) < $j_max; $j++) unset($primes[$k]);
+    public static function generatePrimes($max, $qty = 100) {
+      if ($max < 2) {
+        throw new Exception("There are no prime numbers below 2");
       }
 
-      var_dump($primes);
+      $range_numbers = range(2, $max);
+      foreach($range_numbers as &$range_number) {
+        if(!self::isPrime($range_number)) {
+          $range_number = null;
+        }
+      }
+      unset($range_number);
+
+      //remove all empty array elements
+      $primes = array_filter($range_numbers);
+
       // Randomly reorder $primes array and grab the first $qty
       shuffle($primes);
+      print_r($primes);
       return array_slice($primes, 0, $qty);
     }
 
@@ -46,6 +52,10 @@
     {
       for ($c = 2; $c <= sqrt($number); ++$c)
       {
+        // echo "---\n";
+        // echo "C: " .$c . "\n";
+        // echo "Number: " . $number . "\n";
+        // echo "modulus: " . ($number % $c) . "\n";
         if ($number % $c === 0) return false;
       }
       return true;
