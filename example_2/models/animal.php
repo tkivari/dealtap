@@ -18,6 +18,10 @@
       return $this->serialNumber;
     }
 
+    public function getSerialNumberLength() {
+      return strlen($this->serialNumber);
+    }
+
     private function setSerialNumber($number)
     {
       if (!\DealTap\Utils::isPrime($number)) {

@@ -50,13 +50,28 @@
     }
 
     /*
+     * Return the average length of the serial numbers in the collection
+     * This function could use array_reduce or a foreach loop to sum the serial numbers.
+     * @return int
+     */
+    public function getAverageSerialNumberLength()
+    {
+      $sum = array_reduce($this->collection, function($i, $animal)
+      {
+          return $i += $animal->getSerialNumberLength();
+      });
+
+      return number_format((float)($sum / sizeof($this->collection)), 2);
+    }
+
+    /*
      * Write out serial numbers from collection to the appropriate file
      * @return void
      */
     public function writeOutSerialNumbers()
     {
       $serial_numbers = $this->getSerialNumbers();
-      file_put_contents($this->filename, join(",",$serial_numbers));
+      \DealTap\FileUtils::writeFile($this->filename, join(",",$serial_numbers));
     }
 
     /*
@@ -73,7 +88,7 @@
       return $palindromes;
     }
 
-    
+
 
     /*
      * builds a collection of $class objects from provided serial numbers

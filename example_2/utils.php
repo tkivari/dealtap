@@ -101,3 +101,15 @@
       return $number == $reverse;
     }
   }
+
+  /*
+   * \DealTap\FileUtils
+   * A class of static utility functions for file access
+   */
+  class FileUtils
+  {
+    public static function writeFile($filename = "filename.txt", $content = "")
+    {
+      file_put_contents($filename, $content);
+    }
+  }

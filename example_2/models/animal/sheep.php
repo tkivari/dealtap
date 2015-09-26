@@ -6,6 +6,12 @@
 
   class Sheep extends \DealTap\Animal
   {
-    public $recipes = [];
+    public function __construct($serialNumber)
+    {
+      parent::__construct($serialNumber);
+      // add sheep-specific constructor code
+    }
+
+    /* ... stuff just for sheep ... */
   }
 

@@ -34,8 +34,7 @@
   $soulmates = array_intersect($goat_serials, $sheep_serials);
 
   if (sizeof($soulmates)) {
-    file_put_contents('soulmates.txt', join(",",$soulmates));
-
+    \DealTap\FileUtils::writeFile('soulmates.txt', join(",",$soulmates));
   } else {
     echo "No soulmates found :(\n";
   }
@@ -44,6 +43,24 @@
     return $animal->getSerialNumber();
   };
 
+  /*
+   * FUN FACTS
+   * Some fun facts we can gather about the serial numbers in goat and sheep collections
+   * Some questions I'd like to explore:
+   * - What is the average length of a serial number?
+   * - Are any of the serial numbers palindromes?
+   * - How many times does each digit 0 - 9 appear in each set of serial numbers?
+   * - What is the most popular digit in the serial numbers of each collection?
+   * - What is the average (mean) of the serial numbers in each collection?
+   * - What is the median of the set of digits of the mean of the serial numbers in each collection?
+   */
+
+  // Question 1:  What is the average length of a serial number?
+
+  echo "The average length of a goat serial number is: " . $goats->getAverageSerialNumberLength() . " digits.\n";
+  echo "The average length of a sheep serial number is: " . $sheep->getAverageSerialNumberLength() . " digits.\n\n";
+
+  // Question 2: Are any of the serial numbers in either collection palindromes?
   $goat_palindromes = $goats->getPalindromicSerialNumbers();
 
   echo "Number of Goats with palindromic serial numbers: " . sizeof($goat_palindromes) . "\n";
@@ -64,10 +81,10 @@
   // in the serial number arrays for goats and sheep!
 
   $serialNumberDigitCount = function($serial_number) {
-    return array_count_values(str_split($serial_number));
+    return array_count_values(\DealTap\Utils::getDigits($serial_number));
   };
 
   $counts = array_map($serialNumberDigitCount, $goat_serials);
 
-  var_dump($counts);
+  //var_dump($counts);
 
