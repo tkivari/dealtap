@@ -49,6 +49,10 @@
       return array_map($callback, $this->collection);
     }
 
+    /*
+     * Write out serial numbers from collection to the appropriate file
+     * @return void
+     */
     public function writeOutSerialNumbers()
     {
       $serial_numbers = $this->getSerialNumbers();
