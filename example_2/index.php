@@ -17,26 +17,25 @@
     exit();
   }
 
-  print_r($goat_serial_numbers);
-
-  $goat_serz = $goats->getSerialNumbers();
-
-  //print_r($goat_serz);
-
   $time_end = time();
   $time_to_generate = $time_end - $time_start;
   echo "100 goats and 100 sheep branded in " . $time_to_generate . "ms";
 
+  // write out the serial numbers to the appropriate files
+  $goats->writeOutSerialNumbers();
+  $sheep->writeOutSerialNumbers();
 
+  // we could use the initial collection we generated earlier, but I chose not to
+  // since we might want to alter the serial numbers somehow inside the class
+  // later on.  So we grab the serial numbers that exist inside the collection instead.
+  $goat_serials = $goats->getSerialNumbers();
+  $sheep_serials = $sheep->getSerialNumbers();
 
-  // file_put_contents('goat.txt', join(",",$goat_primes));
-  // file_put_contents('sheep.txt', join(",",$sheep_primes));
+  $soulmates = array_intersect($goat_serials, $sheep_serials);
 
-  // $soulmates = array_intersect($goat_primes, $sheep_primes);
+  if (sizeof($soulmates)) {
+    file_put_contents('soulmates.txt', join(",",$soulmates));
 
-  // if (sizeof($soulmates)) {
-  //   file_put_contents('soulmates.txt', join(",",$soulmates));
-
-  // } else {
-  //   echo "No soulmates found :(\n";
-  // }
+  } else {
+    echo "No soulmates found :(\n";
+  }

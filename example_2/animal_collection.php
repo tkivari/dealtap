@@ -14,19 +14,9 @@
 
     public function __construct($options)
     {
-      $this->filename = $options["animal"] . ".txt" || "filename.txt";
-
+      $this->filename = $options["animal"] ? $options["animal"] . ".txt" : "filename.txt";
       $animal_class = __NAMESPACE__ . '\\' . ucfirst(strtolower($options["animal"]));
-
-      foreach ($options["collection"] as $serialNumber) {
-        if (class_exists($animal_class)) {
-          $this->addAnimal(new $animal_class($serialNumber));
-        } else {
-          throw new Exception($animal_class . " does not exist!");
-        }
-      }
-
-
+      $this->buildCollectionFromSerialNumbers($options["collection"], $animal_class);
     }
 
     /*
@@ -57,5 +47,25 @@
         return $animal->getSerialNumber();
       };
       return array_map($callback, $this->collection);
+    }
+
+    public function writeOutSerialNumbers()
+    {
+      $serial_numbers = $this->getSerialNumbers();
+      file_put_contents($this->filename, join(",",$serial_numbers));
+    }
+
+    /*
+     * builds a collection of $class objects from provided serial numbers
+     * @return void
+     */
+    private function buildCollectionFromSerialNumbers($collection, $class) {
+      foreach ($collection as $serialNumber) {
+        if (class_exists($class)) {
+          $this->addAnimal(new $class($serialNumber));
+        } else {
+          throw new Exception($class . " does not exist!");
+        }
+      }
     }
   }
