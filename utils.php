@@ -11,6 +11,8 @@
 
     /*
      * Generate a list of $qty prime numbers up to $number
+     * I could have used php-gmp advanced math functions (gmp_nextprime, etc) for this,
+     * but not everyone has it installed, so I decided to stick with vanilla PHP.
      * @return array
      */
     public static function generatePrimes($max, $qty = 100) {
