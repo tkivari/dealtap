@@ -89,4 +89,15 @@
       }
       return $median;
     }
+
+    /*
+     * Some day mother will die and I'll get the money
+     * https://www.youtube.com/watch?v=-gW513E8_6I
+     * @return boolean
+     */
+    public static function isPalindrome($number) {
+      if (strlen($number) <= 1) return false; //disregard any single-character palindromes - they're not *real* palindromes, IMO.
+      $reverse = strrev((string) $number);
+      return $number == $reverse;
+    }
   }

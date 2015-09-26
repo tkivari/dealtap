@@ -10,7 +10,6 @@
     protected $facts;
 
     public function __construct($number) {
-      $this->facts = [];
       $this->setSerialNumber($number);
     }
 
@@ -25,11 +24,6 @@
         throw new Exception('Serial Number must be a prime number');
       }
       $this->serialNumber = $number;
-      $this->getInterestingFacts();
-    }
-
-    private function getInterestingFacts() {
-      $this->facts[] = "The sum of the digits in the serial number is: " . \DealTap\Utils::sumDigits($this->serialNumber);
     }
   }
 

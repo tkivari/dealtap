@@ -6,6 +6,6 @@
 
   class Sheep extends \DealTap\Animal
   {
-
+    public $recipes = [];
   }
 

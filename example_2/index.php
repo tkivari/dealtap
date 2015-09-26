@@ -39,3 +39,35 @@
   } else {
     echo "No soulmates found :(\n";
   }
+
+  $callback = function($animal) {
+    return $animal->getSerialNumber();
+  };
+
+  $goat_palindromes = $goats->getPalindromicSerialNumbers();
+
+  echo "Number of Goats with palindromic serial numbers: " . sizeof($goat_palindromes) . "\n";
+  if (sizeof($goat_palindromes)) {
+    $goat_palindromic_serial_numbers = array_map($callback, $goat_palindromes);
+    echo "Palindromic Goat Serial Numbers: " . join(",",$goat_palindromic_serial_numbers) . "\n\n";
+  }
+
+  $sheep_palindromes = $sheep->getPalindromicSerialNumbers();
+  echo "Number of Sheep with palindromic serial numbers: " . sizeof($sheep_palindromes) . "\n";
+  if (sizeof($sheep_palindromes)) {
+    $sheep_palindromic_serial_numbers = array_map($callback, $sheep_palindromes);
+    echo "Palindromic Sheep Serial Numbers: " . join(",",$sheep_palindromic_serial_numbers) . "\n\n";
+  }
+
+
+  // let's try a map/reduce function to get a count of how many times each digit from 0 - 9 is used
+  // in the serial number arrays for goats and sheep!
+
+  $serialNumberDigitCount = function($serial_number) {
+    return array_count_values(str_split($serial_number));
+  };
+
+  $counts = array_map($serialNumberDigitCount, $goat_serials);
+
+  var_dump($counts);
+

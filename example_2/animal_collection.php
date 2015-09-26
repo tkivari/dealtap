@@ -60,13 +60,29 @@
     }
 
     /*
+     * Get palindromic serial numbers
+     * @return array
+     */
+    public function getPalindromicSerialNumbers()
+    {
+      $palindromes = [];
+      foreach($this->collection as $animal) {
+        if (\DealTap\Utils::isPalindrome($animal->getSerialNumber()))
+          $palindromes[] = $animal;
+      }
+      return $palindromes;
+    }
+
+    
+
+    /*
      * builds a collection of $class objects from provided serial numbers
      * @return void
      */
     private function buildCollectionFromSerialNumbers($collection, $class) {
-      foreach ($collection as $serialNumber) {
+      foreach ($collection as $serial_number) {
         if (class_exists($class)) {
-          $this->addAnimal(new $class($serialNumber));
+          $this->addAnimal(new $class($serial_number));
         } else {
           throw new Exception($class . " does not exist!");
         }
