@@ -31,7 +31,6 @@
 
       // Randomly reorder $primes array and grab the first $qty
       shuffle($primes);
-      print_r($primes);
       return array_slice($primes, 0, $qty);
     }
 
@@ -50,13 +49,9 @@
      */
     public static function isPrime($number)
     {
-      for ($c = 2; $c <= sqrt($number); ++$c)
+      for ($count = 2; $count <= sqrt($number); ++$count)
       {
-        // echo "---\n";
-        // echo "C: " .$c . "\n";
-        // echo "Number: " . $number . "\n";
-        // echo "modulus: " . ($number % $c) . "\n";
-        if ($number % $c === 0) return false;
+        if ($number % $count === 0) return false;
       }
       return true;
     }

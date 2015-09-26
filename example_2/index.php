@@ -19,7 +19,7 @@
 
   $time_end = time();
   $time_to_generate = $time_end - $time_start;
-  echo "100 goats and 100 sheep branded in " . $time_to_generate . "ms";
+  echo "\n100 goats and 100 sheep branded in " . $time_to_generate . "ms.\n\n";
 
   // write out the serial numbers to the appropriate files
   $goats->writeOutSerialNumbers();
