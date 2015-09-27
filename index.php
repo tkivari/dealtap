@@ -74,15 +74,14 @@
   }
 
 
-  // let's try a map/reduce function to get a count of how many times each digit from 0 - 9 is used
-  // in the serial number arrays for goats and sheep!
+  // Question 3: How many times does each digit 0 - 9 appear in each set of serial numbers?
+  // let's try a map/reduce function to find out!
 
   $serialNumberDigitCount = function($serial_number) {
     return array_count_values(\DealTap\Utils::getDigits($serial_number));
   };
 
   $counts = \DealTap\MapReduceUtils::map($goat_serials, $serialNumberDigitCount);
-
   $totals = \DealTap\MapReduceUtils::reduce($counts);
 
   print_r($totals);
