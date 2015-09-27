@@ -211,7 +211,12 @@
    */
   class MapReduceUtils
   {
-    public static function combine($counts)
+    public static function map($array, $callback)
+    {
+      return array_map($callback, $array);
+    }
+
+    public static function reduce($counts)
     {
       $sumCounts = function($previous, $current) {
         $digits = array_merge(array_keys($previous), array_keys($current));

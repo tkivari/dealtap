@@ -1,6 +1,6 @@
 <?php
 
-  error_reporting(E_ALL);
+  error_reporting(E_STRICT);
 
   require_once("utils.php");
   require_once("animal_collection.php");
@@ -81,9 +81,9 @@
     return array_count_values(\DealTap\Utils::getDigits($serial_number));
   };
 
-  $counts = array_map($serialNumberDigitCount, $goat_serials);
+  $counts = \DealTap\MapReduceUtils::map($goat_serials, $serialNumberDigitCount);
 
-  $totals = \DealTap\MapReduceUtils::combine($counts);
+  $totals = \DealTap\MapReduceUtils::reduce($counts);
 
   print_r($totals);
 
