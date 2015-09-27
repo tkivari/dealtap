@@ -72,7 +72,7 @@
       // }
 
       /*
-       * METHOD 4: average execution time 0.004s, almost 200% increased efficiency! :)
+       * METHOD 4: average execution time 0.003s, around 7x increased efficiency! :)
        *
        * choose several random ranges from $min to $x and keep looping and generating
        * new ranges until at least 100 random unique primes have been generated.
@@ -80,16 +80,16 @@
        * more efficient than just looping through all of the numbers in the range,
        * the execution time varied widely because I initially used of rand() twice over
        * a large range to determine both $min and $x. I optimized further by limiting the
-       * distance between $min and $x to a maximum of 500.  Setting this distance to
-       * less than 500 seems to provide only a minimal improvement.
+       * distance between $min and $x to a maximum of 600 to reduce the amount of overrun above $qty.
+       * Setting this distance to more or less than 600 seems to provide only a minimal or no improvement.
        */
 
       $primes = array();
 
       while (sizeof($primes) < 100) {
         $min = rand(2, $max);
-        $mx = ($max < ($min+500)) ? $max : $min+500; // this is how I limit the distance between $min and $x
-        $x = rand($number_1, $mx);
+        $mx = ($max < ($min+600)) ? $max : $min+600; // limit the distance between $min and $x for faster loops
+        $x = rand($min, $mx);
 
         for ($i = $min; $i <= $x; ++$i) {
           if (self::isPrime($i)) {
@@ -98,9 +98,7 @@
         }
 
         $primes = array_unique($primes); // remove any duplicate primes on the off-chance that some ranges overlap.
-
       }
-
 
       /*
        * remove all empty array elements - this is only necessary for methods #1, #2, and #3 above.
@@ -108,14 +106,14 @@
       // $primes = array_filter($range_numbers);
 
       /*
-       * Randomly reorder $primes array and grab the first $qty
+       * Randomly reorder $primes array and grab only the first $qty
        */
       shuffle($primes);
       $primes = array_slice($primes, 0, $qty);
 
       $time_end = microtime(true);
       $time_to_generate = $time_end - $time_start;
-      echo "100 random & unique prime numbers generated in " . $time_to_generate . "s.\n";
+      echo "$qty random & unique prime numbers generated in " . $time_to_generate . "s.\n";
 
       return $primes;
     }
@@ -139,6 +137,7 @@
       {
         if ($number % $count === 0) return false;
       }
+
       return true;
     }
 
@@ -149,6 +148,7 @@
     public static function sumDigits($number)
     {
       $digits = self::getDigits($number);
+
       return array_sum($digits);
     }
 
@@ -158,6 +158,7 @@
      */
     public static function mean($number) {
       $sum = self::sumDigits($number);
+
       return $sum / sizeof(digits);
     }
 
@@ -173,6 +174,7 @@
       if (sizeof($digits) % 2 == 0) {
         $median = ($median + $digits[$middle - 1]) / 2;
       }
+
       return $median;
     }
 
@@ -184,10 +186,12 @@
     public static function isPalindrome($number) {
       if (strlen($number) <= 1) return false; //disregard any single-character palindromes - they're not *real* palindromes, IMO.
       $reverse = strrev((string) $number);
+
       return $number == $reverse;
     }
   }
 
+  
   /*
    * \DealTap\FileUtils
    * A class of static utility functions for file access
@@ -197,5 +201,36 @@
     public static function writeFile($filename = "filename.txt", $content = "")
     {
       file_put_contents($filename, $content);
+    }
+  }
+
+
+  /*
+   * \DealTap\MapReduceUtils
+   * A class of static utility functions for map/reduce operations
+   */
+  class MapReduceUtils
+  {
+    public static function combine($counts)
+    {
+      $sumCounts = function($previous, $current) {
+        $digits = array_merge(array_keys($previous), array_keys($current));
+        $output = array();
+
+        //print_r($previous); echo  "\n";
+
+        foreach($digits as $digit) {
+          $output[$digit] = isset($previous[$digit]) ? $previous[$digit] : 0;
+          $output[$digit] += isset($current[$digit]) ? $current[$digit] : 0;
+        }
+
+        return $output;
+      };
+
+      $totals = array_reduce($counts, $sumCounts, array());
+
+      ksort($totals, SORT_NUMERIC);
+
+      return $totals;
     }
   }

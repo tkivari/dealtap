@@ -7,7 +7,6 @@
   abstract class Animal
   {
     protected $serialNumber;
-    protected $facts;
 
     public function __construct($number) {
       $this->setSerialNumber($number);

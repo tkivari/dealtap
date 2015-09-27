@@ -1,5 +1,7 @@
 <?php
 
+  error_reporting(E_ALL);
+
   require_once("utils.php");
   require_once("animal_collection.php");
   require_once("models/animal/goat.php");
@@ -29,8 +31,9 @@
 
   if (sizeof($soulmates)) {
     \DealTap\FileUtils::writeFile('soulmates.txt', join(",",$soulmates));
+    echo "Found " . sizeof($soulmates) . " soulmates :)\n\n";
   } else {
-    echo "No soulmates found :(\n";
+    echo "No soulmates found :(\n\n";
   }
 
   $callback = function($animal) {
@@ -48,8 +51,6 @@
    * - What is the average (mean) of the serial numbers in each collection?
    * - What is the median of the set of digits of the mean of the serial numbers in each collection?
    */
-
-  echo "\n";
 
   // Question 1:  What is the average length of a serial number?
 
@@ -82,5 +83,8 @@
 
   $counts = array_map($serialNumberDigitCount, $goat_serials);
 
-  //var_dump($counts);
+  $totals = \DealTap\MapReduceUtils::combine($counts);
+
+  print_r($totals);
+
 
