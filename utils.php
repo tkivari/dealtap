@@ -74,8 +74,12 @@
       /*
        * METHOD 4: average execution time 0.003s, around 7x increased efficiency! :)
        *
-       * choose several random ranges from $min to $x and keep looping and generating
+       * Limit the number of primes we generate to as close to 100 as possible while
+       * maintaining randomness and uniqueness.
+       * Choose several random ranges from $min to $x (<= $max) and keep looping and generating
        * new ranges until at least 100 random unique primes have been generated.
+       * The reason we can't just take the first 100 primes in the range is that every set
+       * we generate would have the same numbers!
        * The biggest issue with this algorithm was that although it was significantly
        * more efficient than just looping through all of the numbers in the range,
        * the execution time varied widely because I initially used of rand() twice over
@@ -86,7 +90,7 @@
 
       $primes = array();
 
-      while (sizeof($primes) < 100) {
+      while (sizeof($primes) < $qty) {
         $min = rand(2, $max);
         $mx = ($max < ($min+600)) ? $max : $min+600; // limit the distance between $min and $x for faster loops
         $x = rand($min, $mx);
@@ -94,6 +98,13 @@
         for ($i = $min; $i <= $x; ++$i) {
           if (self::isPrime($i)) {
             $primes[] = $i;
+
+            // I removed the following line because doing the check on every addition
+            // adds a significant amount of overhead and time to execute (+0.005s, more than double).
+            // Limiting the number of iterations and discarding the overflow is a much more
+            // effective strategy to manage execution time.
+            //
+            //if (sizeof($primes >= $qty)) break;
           }
         }
 
@@ -191,7 +202,7 @@
     }
   }
 
-  
+
   /*
    * \DealTap\FileUtils
    * A class of static utility functions for file access
