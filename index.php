@@ -7,8 +7,6 @@
 
   define('MAX_PRIME', 10000);
 
-  $time_start = time();
-
   try {
     $goats = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::generatePrimes(MAX_PRIME), "animal" => "goat"]);
     $sheep = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::generatePrimes(MAX_PRIME), "animal" => "sheep"]);
@@ -16,10 +14,6 @@
     echo $e->getMessage();
     exit();
   }
-
-  $time_end = time();
-  $time_to_generate = $time_end - $time_start;
-  echo "\n100 goats and 100 sheep branded in " . $time_to_generate . "ms.\n\n";
 
   // write out the serial numbers to the appropriate files
   $goats->writeOutSerialNumbers();
@@ -54,6 +48,8 @@
    * - What is the average (mean) of the serial numbers in each collection?
    * - What is the median of the set of digits of the mean of the serial numbers in each collection?
    */
+
+  echo "\n";
 
   // Question 1:  What is the average length of a serial number?
 
