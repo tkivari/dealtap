@@ -26,7 +26,11 @@
      */
     public function addAnimal($animal)
     {
-      $this->collection[] = $animal;
+      if ($animal instanceof \DealTap\Animal) {
+        $this->collection[] = $animal;
+      } else {
+        throw new Exception("Error:  Trying to add non-animal object to animal collection");
+      }
     }
 
     /**
@@ -218,10 +222,15 @@
      */
     private function buildCollectionFromSerialNumbers($collection, $class) {
       foreach ($collection as $serial_number) {
-        if (class_exists($class)) {
-          $this->addAnimal(new $class($serial_number));
-        } else {
-          throw new Exception($class . " does not exist!");
+        try {
+          if (class_exists($class)) {
+            $this->addAnimal(new $class($serial_number));
+          } else {
+            throw new Exception($class . " does not exist!");
+          }
+        } catch(Exception $e) {
+          echo $e->getMessage() . "\n\n";
+          die();
         }
       }
     }
