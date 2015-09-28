@@ -2,20 +2,20 @@
 
   namespace DealTap;
 
-  /*
+  /**
    * \DealTap\Utils
    * A class of mathy static utility functions
    */
   class Utils
   {
 
-    /*
+    /**
      * Generate a list of $qty prime numbers up to $number
      * I could have used php-gmp advanced math functions (gmp_nextprime, etc) for this,
      * but not everyone has it installed, so I decided to stick with vanilla PHP.
      * @return array
      */
-    public static function generatePrimes($max, $qty = 100) {
+    public static function getPrimes($max, $qty = 100) {
       if ($max < 2) {
         throw new Exception("Please choose a range maximum greater than 2");
       }
@@ -23,10 +23,10 @@
 
       /*
        * NOTE:  I came up with four possible strategies for generating random, unique prime numbers.
-       * The fourth method outlined below is the most efficient by far, the others
+       * The first method outlined below is the most efficient by far, the others
        * are all fairly similar as far as average execution time is concerned.
-       * Of course, execution time will be affected by external factors, and is only provided for a
-       * comparison of the different approaches.
+       * Of course, execution time will be affected by external factors, and is only
+       * provided for a comparison of the different approaches.
        */
 
       /*
@@ -47,7 +47,7 @@
 
       $primes = array();
       while (sizeof($primes) < $qty) {
-        $primes = array_merge($primes, self::getPrimes($max,$qty));
+        $primes = array_merge($primes, self::generatePrimes($max,$qty));
         $primes = array_unique($primes);
       }
 
@@ -116,11 +116,11 @@
       return $primes;
     }
 
-    /*
+    /**
      * Generate and return prime numbers
      * @return array
      */
-    public static function getPrimes($max, $qty) {
+    public static function generatePrimes($max, $qty) {
       $primes = array();
 
       while (sizeof($primes) < $qty) {
@@ -136,18 +136,40 @@
         }
 
       }
+
       return $primes;
     }
 
-    /*
+    /**
      * Split the digits of $number into an array of numbers
      * @return array
      */
-    public static function getDigits($number) {
+    public static function getDigits($number)
+    {
       return str_split($number);
     }
 
-    /*
+    /**
+     * Get the median value of the specified array.
+     * The array should be sorted numerically.
+     * @return int
+     */
+    public static function getMedian($array)
+    {
+      $array = array_filter($array, "is_numeric");
+      sort($array, SORT_NUMERIC);
+      $count = sizeof($array);
+      $middle_value = floor(($count-1)/2);
+      if($count % 2) { // if there is an odd number of digits, the middle is the median
+          $median = $array[$middle_value];
+      } else { // if there is an even number of digits, find the average of the middle 2 digits
+          $median = (($array[$middle_value]+$array[$middle_value + 1]) / 2);
+      }
+
+      return $median;
+    }
+
+    /**
      * Tests primality of $number
      * Based on the simple test outlined at https://en.wikipedia.org/wiki/Primality_test
      * @return boolean
@@ -162,7 +184,7 @@
       return true;
     }
 
-    /*
+    /**
      * Gets the sum of the digits in a given number
      * @return int
      */
@@ -173,7 +195,7 @@
       return array_sum($digits);
     }
 
-    /*
+    /**
      * Gets the mean of the digits in a given number
      * @return int
      */
@@ -183,7 +205,7 @@
       return $sum / sizeof(digits);
     }
 
-    /*
+    /**
      * Gets the median of the digits in a given number
      * @return int
      */
@@ -199,26 +221,43 @@
       return $median;
     }
 
-    /*
+    /**
      * Some day mother will die and I'll get the money
      * https://www.youtube.com/watch?v=-gW513E8_6I
      * @return boolean
      */
-    public static function isPalindrome($number) {
+    public static function isPalindrome($number)
+    {
       if (strlen($number) <= 1) return false; //disregard any single-character palindromes - they're not *real* palindromes, IMO.
       $reverse = strrev((string) $number);
 
       return $number == $reverse;
     }
+
+    /**
+     * get min and max values from array and return the corresponding array keys
+     * @return array
+     */
+    public static function arrayMinMax($array)
+    {
+      $most_popular_digit = array_keys($array, max($array))[0];
+      $least_popular_digit = array_keys($array, min($array))[0];
+
+      return array($most_popular_digit, $least_popular_digit);
+    }
   }
 
 
-  /*
+  /**
    * \DealTap\FileUtils
    * A class of static utility functions for file access
    */
   class FileUtils
   {
+    /**
+     * Write out the provided content to the specified filename
+     * @return void
+     */
     public static function writeFile($filename = "filename.txt", $content = "")
     {
       file_put_contents($filename, $content);
@@ -226,24 +265,30 @@
   }
 
 
-  /*
+  /**
    * \DealTap\MapReduceUtils
    * A class of static utility functions for map/reduce operations
    */
   class MapReduceUtils
   {
+    /**
+     * Applies the callback to the elements of the given array
+     * @return array
+     */
     public static function map($array, $callback)
     {
       return array_map($callback, $array);
     }
 
+    /**
+     * Reduce the given counts to a single array of values
+     * @return array
+     */
     public static function reduce($counts)
     {
       $sumCounts = function($previous, $current) {
         $digits = array_merge(array_keys($previous), array_keys($current));
         $output = array();
-
-        //print_r($previous); echo  "\n";
 
         foreach($digits as $digit) {
           $output[$digit] = isset($previous[$digit]) ? $previous[$digit] : 0;

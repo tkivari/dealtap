@@ -8,8 +8,8 @@
   define('MAX_PRIME', 10000);
 
   try {
-    $goats = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::generatePrimes(MAX_PRIME), "animal" => "goat"]);
-    $sheep = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::generatePrimes(MAX_PRIME), "animal" => "sheep"]);
+    $goats = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getPrimes(MAX_PRIME), "animal" => "goat"]);
+    $sheep = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getPrimes(MAX_PRIME), "animal" => "sheep"]);
   } catch (Exception $e) {
     echo $e->getMessage();
     exit();
@@ -41,24 +41,27 @@
 
   foreach($facts as $animal_facts) {
 
-    echo "FUN FACTS ABOUT " . strtoupper($animal_facts["animal"]) . " SERIAL NUMBERS\n";
+    echo "FUN FACTS ABOUT " . strtoupper($animal_facts["animal_type"]) . " SERIAL NUMBERS\n";
     echo "=============================================================================\n\n";
 
-    echo "The average length of a " . $animal_facts["animal"] . " serial number is: " . $animal_facts["average_serial_number_length"] . " digits.\n";
-    echo "Number of palindromic " . $animal_facts["animal"] . " serial numbers: " . sizeof($animal_facts["palindromes"]) . "\n";
+    echo "The average length of a " . $animal_facts["animal_type"] . " serial number is: " . $animal_facts["average_serial_number_length"] . " digits.\n";
+    echo "Number of palindromic " . $animal_facts["animal_type"] . " serial numbers: " . sizeof($animal_facts["palindromes"]) . "\n";
     if (sizeof($animal_facts["palindromic_serial_numbers"])) {
-      echo "Palindromic ". ucfirst($animal_facts["animal"]) . " Serial Numbers: " . join(",",$animal_facts["palindromic_serial_numbers"]) . "\n";
+      echo "Palindromic ". ucfirst($animal_facts["animal_type"]) . " Serial Numbers: " . join(",",$animal_facts["palindromic_serial_numbers"]) . "\n";
     }
     echo "\n";
-    echo "The distribution of each digit 0 - 9 in the " . $animal_facts["animal"] . "serial numbers is:\n\n";
+    echo "The distribution of each digit 0 - 9 in all of the " . $animal_facts["animal_type"] . " serial numbers is:\n\n";
     print_r($animal_facts["digit_distribution"]);
-    echo "\n\n";
-    echo "The most popular digit contained in the " . $animal_facts["animal"] . " serial numbers is: " . $animal_facts["most_popular_digit"] . "\n";
-    echo "The least popular digit contained in the " . $animal_facts["animal"] . " serial numbers is: " . $animal_facts["least_popular_digit"] . "\n";
+    echo "\n";
+    echo "The most popular digit contained in the " . $animal_facts["animal_type"] . " serial numbers is: " . $animal_facts["most_popular_digit"] . "\n";
+    echo "The least popular digit contained in the " . $animal_facts["animal_type"] . " serial numbers is: " . $animal_facts["least_popular_digit"] . "\n";
 
-    echo "\n\n";
+    echo "\n";
 
-    echo "The average (mean) of the serial numbers in the " . $animal_facts["animal"] . " collection is " . $animal_facts["mean_serial_number"];
+    echo "The average (mean) of the serial numbers in the " . $animal_facts["animal_type"] . " collection is " . $animal_facts["mean_serial_number"] . "\n";
+    echo "\nThe median value of the set of digits that comprise the average of the serial numbers\n";
+    echo "in the " . $animal_facts["animal_type"] . " collection [ " . join("-",$animal_facts['mean_serial_number_digits']) . "] is " . $animal_facts["mean_median"];
+
     echo "\n\n";
 
   }
