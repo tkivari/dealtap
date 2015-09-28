@@ -52,7 +52,6 @@
       }
 
       $primes = array_unique($primes); // remove any duplicate primes on the off-chance that some ranges overlap.
-      echo "size: " . sizeof($primes) . "\n\n";
 
       /*
        * ALTERNATE METHOD 1 (first attempt): average execution time 0.0225s

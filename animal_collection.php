@@ -132,8 +132,6 @@
       $facts['mean_serial_number_digits'] = \DealTap\Utils::getDigits(str_replace(".","",$facts['mean_serial_number']));
       sort($facts['mean_serial_number_digits'], SORT_NUMERIC);
 
-      print_r($facts['mean_serial_number_digits']);
-
       // Question 7: What is the median of the set of digits of the mean of the serial numbers in the collection?
 
       $facts['mean_median'] = $this->getMeanMedian($facts['mean_serial_number_digits']);
