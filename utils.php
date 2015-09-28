@@ -183,43 +183,6 @@
     }
 
     /**
-     * Gets the sum of the digits in a given number
-     * @return int
-     */
-    public static function sumDigits($number)
-    {
-      $digits = self::getDigits($number);
-
-      return array_sum($digits);
-    }
-
-    /**
-     * Gets the mean of the digits in a given number
-     * @return int
-     */
-    public static function mean($number) {
-      $sum = self::sumDigits($number);
-
-      return $sum / sizeof(digits);
-    }
-
-    /**
-     * Gets the median of the digits in a given number
-     * @return int
-     */
-    public static function median($number)
-    {
-      $digits = sort(self::getDigits($number), SORT_NUMERIC);
-      $middle = floor(sizeof($digits) / 2);
-      $median = $array[$middle];
-      if (sizeof($digits) % 2 == 0) {
-        $median = ($median + $digits[$middle - 1]) / 2;
-      }
-
-      return $median;
-    }
-
-    /**
      * Some day mother will die and I'll get the money
      * https://www.youtube.com/watch?v=-gW513E8_6I
      * @return boolean
