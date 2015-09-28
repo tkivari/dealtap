@@ -106,6 +106,7 @@
        * 6 - What is the average (mean) of the serial numbers in the collection?
        * 7 - What is the median value of the serial numbers in the collection?
        * 8 - What is the median of the set of digits of the average (mean) of the serial numbers in the collection?
+       * 9 - Do any of the serial numbers in the collection belong to the fibonacci sequence?
        */
 
       $facts = [
@@ -149,6 +150,7 @@
       // Why would anyone want to know that? Who knows?
 
       $facts['mean_median'] = $this->getMedian($facts['mean_serial_number_digits']);
+      $facts['fibonacci_numbers'] = $this->getFibonacciSerialNumbers();
 
       return $facts;
     }
@@ -214,6 +216,23 @@
       }
 
       return $palindromes;
+    }
+
+    /**
+     * Get all serial nubers that belong to the fibonacci sequence
+     * @return array
+     */
+    private function getFibonacciSerialNumbers()
+    {
+      $fibonacci_numbers = array();
+
+      foreach ($this->collection as $animal) {
+        $serial_number = $animal->getSerialNumber();
+        if (\DealTap\Utils::isFibonacci($serial_number))
+          $fibonacci_numbers[] = $serial_number;
+      }
+
+      return $fibonacci_numbers;
     }
 
     /**

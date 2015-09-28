@@ -119,7 +119,7 @@
      * distance between $loop_min and $loop_max to a maximum of $distance to reduce the amount of overrun above $qty.
      * @return array
      */
-    public static function generateRandomPrimes($max, $qty = 100, $distance = 500) 
+    public static function generateRandomPrimes($max, $qty = 100, $distance = 500)
     {
       $primes = array();
 
@@ -207,6 +207,18 @@
       $least_popular_digit = array_keys($array, min($array))[0];
 
       return array($most_popular_digit, $least_popular_digit);
+    }
+
+    /**
+     * Test whether $number is a fibonacci number
+     * @return boolean
+     */
+    public static function isFibonacci($number)
+    {
+      $test_1 = sqrt(5 * pow($number, 2) + 4);
+      $test_2 = sqrt(5 * pow($number, 2) - 4);
+
+      return ctype_digit((string)$test_1) || ctype_digit((string)$test_2);
     }
   }
 

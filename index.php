@@ -64,7 +64,13 @@
     echo "\nThe median value of the set of digits that comprise the average of the serial numbers\n";
     echo "in the " . $animal_facts["animal_type"] . " collection [ " . join("-",$animal_facts['mean_serial_number_digits']) . " ] is " . $animal_facts["mean_median"];
 
+    $fibonacci = sizeof($animal_facts['fibonacci_numbers']) ? join(",",$animal_facts['fibonacci_numbers']) : "none found";
+    echo "\n\nFibonacci numbers found in the " . $animal_facts["animal_type"] . " serial number collection: " . $fibonacci . "\n\n";
+
     echo "\n\n";
+
+    echo (\DealTap\Utils::isFibonacci(1597)) ? "yep":"nope";
+
 
   }
 
