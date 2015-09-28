@@ -47,6 +47,7 @@
       $callback = function($animal) {
         return $animal->getSerialNumber();
       };
+
       return array_map($callback, $this->collection);
     }
 
@@ -195,6 +196,7 @@
         if (\DealTap\Utils::isPalindrome($animal->getSerialNumber()))
           $palindromes[] = $animal;
       }
+
       return $palindromes;
     }
 

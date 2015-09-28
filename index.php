@@ -8,8 +8,8 @@
   define('MAX_PRIME', 10000);
 
   try {
-    $goats = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getPrimes(MAX_PRIME), "animal" => "goat"]);
-    $sheep = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getPrimes(MAX_PRIME), "animal" => "sheep"]);
+    $goats = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getRandomPrimes(MAX_PRIME), "animal" => "goat"]);
+    $sheep = new \DealTap\Animal\Collection(["collection" => \DealTap\Utils::getRandomPrimes(MAX_PRIME), "animal" => "sheep"]);
   } catch (Exception $e) {
     echo $e->getMessage();
     exit();
