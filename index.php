@@ -68,10 +68,6 @@
     echo "\n\nFibonacci numbers found in the " . $animal_facts["animal_type"] . " serial number collection: " . $fibonacci . "\n\n";
 
     echo "\n\n";
-
-    echo (\DealTap\Utils::isFibonacci(1597)) ? "yep":"nope";
-
-
   }
 
 
