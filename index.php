@@ -1,7 +1,5 @@
 <?php
 
-  error_reporting(E_STRICT);
-
   require_once("utils.php");
   require_once("animal_collection.php");
   require_once("models/animal/goat.php");
@@ -22,7 +20,7 @@
   $sheep->writeOutSerialNumbers();
 
   // we could use the initial collection we generated earlier, but I chose not to
-  // since we might want to alter the serial numbers somehow inside the class
+  // since we might want to alter the serial numbers somehow inside the individual animal class
   // later on.  So we grab the serial numbers that exist inside the collection instead.
   $goat_serials = $goats->getSerialNumbers();
   $sheep_serials = $sheep->getSerialNumbers();
@@ -36,54 +34,34 @@
     echo "No soulmates found :(\n\n";
   }
 
-  $callback = function($animal) {
-    return $animal->getSerialNumber();
-  };
+  $facts = array();
 
-  /*
-   * FUN FACTS
-   * Some fun facts we can gather about the serial numbers in goat and sheep collections
-   * Some questions I'd like to explore:
-   * - What is the average length of a serial number?
-   * - Are any of the serial numbers palindromes?
-   * - How many times does each digit 0 - 9 appear in each set of serial numbers?
-   * - What is the most popular digit in the serial numbers of each collection?
-   * - What is the average (mean) of the serial numbers in each collection?
-   * - What is the median of the set of digits of the mean of the serial numbers in each collection?
-   */
+  $facts[] = $goats->getFacts();
+  $facts[] = $sheep->getFacts();
 
-  // Question 1:  What is the average length of a serial number?
+  foreach($facts as $animal_facts) {
 
-  echo "The average length of a goat serial number is: " . $goats->getAverageSerialNumberLength() . " digits.\n";
-  echo "The average length of a sheep serial number is: " . $sheep->getAverageSerialNumberLength() . " digits.\n\n";
+    echo "FUN FACTS ABOUT " . strtoupper($animal_facts["animal"]) . " SERIAL NUMBERS\n";
+    echo "=============================================================================\n\n";
 
-  // Question 2: Are any of the serial numbers in either collection palindromes?
-  $goat_palindromes = $goats->getPalindromicSerialNumbers();
+    echo "The average length of a " . $animal_facts["animal"] . " serial number is: " . $animal_facts["average_serial_number_length"] . " digits.\n";
+    echo "Number of palindromic " . $animal_facts["animal"] . " serial numbers: " . sizeof($animal_facts["palindromes"]) . "\n";
+    if (sizeof($animal_facts["palindromic_serial_numbers"])) {
+      echo "Palindromic ". ucfirst($animal_facts["animal"]) . " Serial Numbers: " . join(",",$animal_facts["palindromic_serial_numbers"]) . "\n";
+    }
+    echo "\n";
+    echo "The distribution of each digit 0 - 9 in the " . $animal_facts["animal"] . "serial numbers is:\n\n";
+    print_r($animal_facts["digit_distribution"]);
+    echo "\n\n";
+    echo "The most popular digit contained in the " . $animal_facts["animal"] . " serial numbers is: " . $animal_facts["most_popular_digit"] . "\n";
+    echo "The least popular digit contained in the " . $animal_facts["animal"] . " serial numbers is: " . $animal_facts["least_popular_digit"] . "\n";
 
-  echo "Number of Goats with palindromic serial numbers: " . sizeof($goat_palindromes) . "\n";
-  if (sizeof($goat_palindromes)) {
-    $goat_palindromic_serial_numbers = array_map($callback, $goat_palindromes);
-    echo "Palindromic Goat Serial Numbers: " . join(",",$goat_palindromic_serial_numbers) . "\n\n";
+    echo "\n\n";
+
+    echo "The average (mean) of the serial numbers in the " . $animal_facts["animal"] . " collection is " . $animal_facts["mean_serial_number"];
+    echo "\n\n";
+
   }
 
-  $sheep_palindromes = $sheep->getPalindromicSerialNumbers();
-  echo "Number of Sheep with palindromic serial numbers: " . sizeof($sheep_palindromes) . "\n";
-  if (sizeof($sheep_palindromes)) {
-    $sheep_palindromic_serial_numbers = array_map($callback, $sheep_palindromes);
-    echo "Palindromic Sheep Serial Numbers: " . join(",",$sheep_palindromic_serial_numbers) . "\n\n";
-  }
-
-
-  // Question 3: How many times does each digit 0 - 9 appear in each set of serial numbers?
-  // let's try a map/reduce function to find out!
-
-  $serialNumberDigitCount = function($serial_number) {
-    return array_count_values(\DealTap\Utils::getDigits($serial_number));
-  };
-
-  $counts = \DealTap\MapReduceUtils::map($goat_serials, $serialNumberDigitCount);
-  $totals = \DealTap\MapReduceUtils::reduce($counts);
-
-  print_r($totals);
 
 

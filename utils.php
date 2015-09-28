@@ -25,10 +25,37 @@
        * NOTE:  I came up with four possible strategies for generating random, unique prime numbers.
        * The fourth method outlined below is the most efficient by far, the others
        * are all fairly similar as far as average execution time is concerned.
+       * Of course, execution time will be affected by external factors, and is only provided for a
+       * comparison of the different approaches.
        */
 
       /*
-       * METHOD 1: average execution time 0.0225s
+       * BEST METHOD (fourth attempt): average execution time 0.0015s, around 20x increased efficiency over the other strategies.
+       *
+       * Limit the number of primes we generate to as close to 100 as possible while
+       * maintaining randomness and uniqueness.
+       * Choose several random ranges from $min to $x (<= $max) and keep looping and generating
+       * new ranges until at least 100 random unique primes have been generated.
+       * The reason we can't just take the first 100 primes in the range is that every set
+       * we generate would have the all same numbers!
+       * The biggest issue with this algorithm was that although it was significantly
+       * more efficient than just looping through all of the numbers in the range,
+       * the execution time varied widely because I initially used of rand() twice over
+       * a large range to determine both $min and $x. I optimized further by limiting the
+       * distance between $min and $x to a maximum of 1000 to reduce the amount of overrun above $qty.
+       */
+
+      $primes = array();
+      while (sizeof($primes) < $qty) {
+        $primes = array_merge($primes, self::getPrimes($max,$qty));
+        $primes = array_unique($primes);
+      }
+
+      $primes = array_unique($primes); // remove any duplicate primes on the off-chance that some ranges overlap.
+      echo "size: " . sizeof($primes) . "\n\n";
+
+      /*
+       * ALTERNATE METHOD 1 (first attempt): average execution time 0.0225s
        *
        * set a range and then remove the non-prime values
        */
@@ -43,7 +70,7 @@
 
 
       /*
-       * METHOD 2: average execution time 0.0269s
+       * ALTERNATE METHOD 2 (second attempt): average execution time 0.0269s
        *
        * set a range and use array_map to check each number in the range for primality, leaving
        * array of only prime numbers
@@ -57,7 +84,7 @@
 
 
       /*
-       * METHOD 3: average execution time 0.0213s
+       * ALTERNATE METHOD 3 (third attempt): average execution time 0.0213s
        *
        * loop through the numbers 2 to $max and check each one for primality.  If it is
        * a prime number, add it to $range_numbers
@@ -72,47 +99,7 @@
       // }
 
       /*
-       * METHOD 4: average execution time 0.003s, around 7x increased efficiency! :)
-       *
-       * Limit the number of primes we generate to as close to 100 as possible while
-       * maintaining randomness and uniqueness.
-       * Choose several random ranges from $min to $x (<= $max) and keep looping and generating
-       * new ranges until at least 100 random unique primes have been generated.
-       * The reason we can't just take the first 100 primes in the range is that every set
-       * we generate would have the same numbers!
-       * The biggest issue with this algorithm was that although it was significantly
-       * more efficient than just looping through all of the numbers in the range,
-       * the execution time varied widely because I initially used of rand() twice over
-       * a large range to determine both $min and $x. I optimized further by limiting the
-       * distance between $min and $x to a maximum of 600 to reduce the amount of overrun above $qty.
-       * Setting this distance to more or less than 600 seems to provide only a minimal or no improvement.
-       */
-
-      $primes = array();
-
-      while (sizeof($primes) < $qty) {
-        $min = rand(2, $max);
-        $mx = ($max < ($min+600)) ? $max : $min+600; // limit the distance between $min and $x for faster loops
-        $x = rand($min, $mx);
-
-        for ($i = $min; $i <= $x; ++$i) {
-          if (self::isPrime($i)) {
-            $primes[] = $i;
-
-            // I removed the following line because doing the check on every addition
-            // adds a significant amount of overhead and time to execute (+0.005s, more than double).
-            // Limiting the number of iterations and discarding the overflow is a much more
-            // effective strategy to manage execution time.
-            //
-            //if (sizeof($primes >= $qty)) break;
-          }
-        }
-
-        $primes = array_unique($primes); // remove any duplicate primes on the off-chance that some ranges overlap.
-      }
-
-      /*
-       * remove all empty array elements - this is only necessary for methods #1, #2, and #3 above.
+       * remove all empty array elements - this is only necessary for alternate methods #1, #2, and #3 above.
        */
       // $primes = array_filter($range_numbers);
 
@@ -126,6 +113,29 @@
       $time_to_generate = $time_end - $time_start;
       echo "$qty random & unique prime numbers generated in " . $time_to_generate . "s.\n";
 
+      return $primes;
+    }
+
+    /*
+     * Generate and return prime numbers
+     * @return array
+     */
+    public static function getPrimes($max, $qty) {
+      $primes = array();
+
+      while (sizeof($primes) < $qty) {
+        // limit the distance between $loop_min and $loop_max for faster loops
+        $loop_min = rand(2, $max);
+        $loop_max = ($max < ($loop_min+500)) ? $max : $loop_min+500;
+
+        for ($i = $loop_min; $i <= $loop_max; ++$i) {
+          if (self::isPrime($i)) {
+            $primes[] = $i;
+            if (sizeof($primes) > $qty) break 2; // if there are already 100 elements in $prime, we don't need any more.
+          }
+        }
+
+      }
       return $primes;
     }
 
