@@ -164,6 +164,9 @@
      */
     private function getDigitDistribution($serial_numbers)
     {
+      /*
+       * Return a count of each digit in each serial number provided
+       */
       $serialNumberDigitCount = function($serial_number) {
         return array_count_values(\DealTap\Utils::getDigits($serial_number));
       };

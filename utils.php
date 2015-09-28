@@ -15,7 +15,8 @@
      * but not everyone has it installed, so I decided to stick with vanilla PHP.
      * @return array
      */
-    public static function getRandomPrimes($max, $qty = 100) {
+    public static function getRandomPrimes($max, $qty = 100)
+    {
       if ($max < 2) {
         throw new Exception("Please choose a range maximum greater than 2");
       }
