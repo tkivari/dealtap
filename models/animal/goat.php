@@ -2,8 +2,6 @@
 
   namespace DealTap\Animal;
 
-  require_once("models/animal.php");
-
   /**
    * Goat class.
    * A goat is an animal.

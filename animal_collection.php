@@ -133,19 +133,23 @@
       $facts['mean_serial_number_digits'] = \DealTap\Utils::getDigits(str_replace(".","",$facts['mean_serial_number']));
       sort($facts['mean_serial_number_digits'], SORT_NUMERIC);
 
+      $serial_numbers_sorted = $serial_numbers;
+      sort($serial_numbers_sorted);
+
+      $facts['median_serial_number'] = $this->getMedian($serial_numbers);
+
       // Question 7: What is the median of the set of digits of the mean of the serial numbers in the collection?
 
-      $facts['mean_median'] = $this->getMeanMedian($facts['mean_serial_number_digits']);
+      $facts['mean_median'] = $this->getMedian($facts['mean_serial_number_digits']);
 
       return $facts;
     }
 
     /**
-     * Get the median of the set of digits that comprise the mean of the serial number in the collection
-     * Why would anyone ever want this?  Who knows...
+     * Get the median of the set of $digits
      * @return int
      */
-    private function getMeanMedian($digits)
+    private function getMedian($digits)
     {
       return \DealTap\Utils::getMedian($digits);
     }

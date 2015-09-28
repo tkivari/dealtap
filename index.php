@@ -2,6 +2,7 @@
 
   require_once("utils.php");
   require_once("animal_collection.php");
+  require_once("models/animal.php");
   require_once("models/animal/goat.php");
   require_once("models/animal/sheep.php");
 
@@ -59,8 +60,9 @@
     echo "\n";
 
     echo "The average (mean) of the serial numbers in the " . $animal_facts["animal_type"] . " collection is " . $animal_facts["mean_serial_number"] . "\n";
+    echo "The median value of the serial numbers in the " . $animal_facts["animal_type"] . " collection is " . $animal_facts["median_serial_number"] . "\n";
     echo "\nThe median value of the set of digits that comprise the average of the serial numbers\n";
-    echo "in the " . $animal_facts["animal_type"] . " collection [ " . join("-",$animal_facts['mean_serial_number_digits']) . "] is " . $animal_facts["mean_median"];
+    echo "in the " . $animal_facts["animal_type"] . " collection [ " . join("-",$animal_facts['mean_serial_number_digits']) . " ] is " . $animal_facts["mean_median"];
 
     echo "\n\n";
 
