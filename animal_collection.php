@@ -100,7 +100,8 @@
        * 4 - What is the most popular digit in the serial numbers of the collection?
        * 5 - What is the least popular digit in the serial numbers of the collection?
        * 6 - What is the average (mean) of the serial numbers in the collection?
-       * 7 - What is the median of the set of digits of the mean of the serial numbers in the collection?
+       * 7 - What is the median value of the serial numbers in the collection?
+       * 8 - What is the median of the set of digits of the average (mean) of the serial numbers in the collection?
        */
 
       $facts = [
@@ -133,12 +134,15 @@
       $facts['mean_serial_number_digits'] = \DealTap\Utils::getDigits(str_replace(".","",$facts['mean_serial_number']));
       sort($facts['mean_serial_number_digits'], SORT_NUMERIC);
 
+      // Question 7: What is the median value of the serial numbers in the collection?
+
       $serial_numbers_sorted = $serial_numbers;
       sort($serial_numbers_sorted);
 
-      $facts['median_serial_number'] = $this->getMedian($serial_numbers);
+      $facts['median_serial_number'] = $this->getMedian($serial_numbers_sorted);
 
-      // Question 7: What is the median of the set of digits of the mean of the serial numbers in the collection?
+      // Question 8: What is the median of the set of digits that comprise the average (mean) of the serial numbers in the collection?
+      // Why would anyone want to know that? Who knows?
 
       $facts['mean_median'] = $this->getMedian($facts['mean_serial_number_digits']);
 
@@ -196,6 +200,7 @@
     private function getPalindromicSerialNumbers()
     {
       $palindromes = [];
+
       foreach($this->collection as $animal) {
         if (\DealTap\Utils::isPalindrome($animal->getSerialNumber()))
           $palindromes[] = $animal;
