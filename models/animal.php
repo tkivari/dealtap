@@ -47,7 +47,7 @@
      */
     private function setSerialNumber($number)
     {
-      if (!\DealTap\Utils::isPrime($number)) {
+      if (!\DealTap\Utils::isPrimeNumber($number)) {
         throw new Exception('Serial Number must be a prime number');
       }
       $this->serialNumber = $number;

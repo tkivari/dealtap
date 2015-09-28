@@ -39,7 +39,7 @@
 
       $primes = array();
       while (sizeof($primes) < $qty) {
-        $primes = array_merge($primes, self::generatePrimes($max,$qty));
+        $primes = array_merge($primes, self::generateRandomPrimes($max,$qty));
         $primes = array_unique($primes); // remove any duplicates on the off-chance that some ranges overlap.
       }
 
@@ -51,7 +51,7 @@
 
       // $range_numbers = range(2, $max);
       // foreach($range_numbers as &$range_number) {
-      //   if(!self::isPrime($range_number)) {
+      //   if(!self::isPrimeNumber($range_number)) {
       //     $range_number = null;
       //   }
       // }
@@ -67,7 +67,7 @@
 
       // $range_numbers = range(2,$max);
       // $callback = function($number) {
-      //   return self::isPrime($number) ? $number : null;
+      //   return self::isPrimeNumber($number) ? $number : null;
       // };
       // $range_numbers = array_map($callback, $range_numbers);
 
@@ -82,7 +82,7 @@
       // $range_numbers = array();
 
       // for ($i = 2; $i <= $max; ++$i) {
-      //   if (self::isPrime($i)) {
+      //   if (self::isPrimeNumber($i)) {
       //     $range_numbers[] = $i;
       //   }
       // }
@@ -119,7 +119,8 @@
      * distance between $loop_min and $loop_max to a maximum of $distance to reduce the amount of overrun above $qty.
      * @return array
      */
-    public static function generatePrimes($max, $qty, $distance = 500) {
+    public static function generateRandomPrimes($max, $qty = 100, $distance = 500) 
+    {
       $primes = array();
 
       while (sizeof($primes) < $qty) {
@@ -128,7 +129,7 @@
         $loop_max = ($max < ($loop_min+$distance)) ? $max : $loop_min+$distance;
 
         for ($i = $loop_min; $i <= $loop_max; ++$i) {
-          if (self::isPrime($i)) {
+          if (self::isPrimeNumber($i)) {
             $primes[] = $i;
             if (sizeof($primes) > $qty) break 2; // if there are already 100 elements in $prime, we don't need any more.
           }
@@ -173,7 +174,7 @@
      * Based on the simple test outlined at https://en.wikipedia.org/wiki/Primality_test
      * @return boolean
      */
-    public static function isPrime($number)
+    public static function isPrimeNumber($number)
     {
       for ($count = 2; $count <= sqrt($number); ++$count)
       {
