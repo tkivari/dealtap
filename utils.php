@@ -10,7 +10,7 @@
   {
 
     /**
-     * Generate a list of $qty prime numbers up to $number
+     * Generate a list of $qty prime numbers up to $max
      * I could have used php-gmp advanced math functions (gmp_nextprime, etc) for this,
      * but not everyone has it installed, so I decided to stick with vanilla PHP.
      * @return array
@@ -30,7 +30,7 @@
        */
 
       /*
-       * BEST METHOD (fourth attempt): average execution time 0.0019s, around 15x increased efficiency over the other strategies.
+       * BEST METHOD (fourth attempt): average execution time 0.002s, more than 10x increased efficiency over the other strategies.
        *
        * Limit the number of primes we generate to as close to 100 as possible while
        * maintaining randomness and uniqueness.
@@ -39,10 +39,8 @@
       $primes = array();
       while (sizeof($primes) < $qty) {
         $primes = array_merge($primes, self::generatePrimes($max,$qty));
-        $primes = array_unique($primes); // just in case
+        $primes = array_unique($primes); // remove any duplicates on the off-chance that some ranges overlap.
       }
-
-      $primes = array_unique($primes); // remove any duplicate primes on the off-chance that some ranges overlap.
 
       /*
        * ALTERNATE METHOD 1 (first attempt): average execution time 0.0225s
@@ -112,6 +110,7 @@
      * new ranges until at least 100 random unique primes have been generated.
      * The reason we can't just take the first 100 primes in the range is that every set
      * we generate would have the all same numbers!
+     *
      * The biggest issue with this algorithm was that although it was significantly
      * more efficient than just looping through all of the numbers in the range,
      * the execution time varied widely because I initially used rand() twice over
